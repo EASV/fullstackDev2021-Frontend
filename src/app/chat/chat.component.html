@@ -1,1 +1,8 @@
 <H1>HELLO WORLD CHAT</H1>
+
+<label>
+  Message:
+  <input type="text" [formControl]="message">
+</label>
+
+<button (click)="sendMessage()">Send Message</button>
