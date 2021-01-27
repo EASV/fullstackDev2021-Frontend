@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
+import {ChatService} from './shared/chat.service';
+import {Observable, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-chat',
@@ -8,12 +10,20 @@ import {FormControl} from '@angular/forms';
 })
 export class ChatComponent implements OnInit {
   message = new FormControl('');
-  constructor() { }
+  messages: string[] = [];
+  constructor(private chatService: ChatService) { }
 
   ngOnInit(): void {
+    this.chatService.listenForMessages()
+      .subscribe(message => {
+        this.messages.push(message);
+      });
   }
 
   sendMessage(): void {
     console.log(this.message.value);
+    this.chatService.sendMessage(this.message.value);
   }
+
+
 }
