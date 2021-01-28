@@ -1,7 +1,6 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {ChatService} from './shared/chat.service';
-import {Observable, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-chat',
@@ -16,6 +15,7 @@ export class ChatComponent implements OnInit {
   ngOnInit(): void {
     this.chatService.listenForMessages()
       .subscribe(message => {
+        console.log('hello');
         this.messages.push(message);
       });
   }
@@ -24,6 +24,4 @@ export class ChatComponent implements OnInit {
     console.log(this.message.value);
     this.chatService.sendMessage(this.message.value);
   }
-
-
 }
