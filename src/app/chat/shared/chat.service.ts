@@ -17,4 +17,13 @@ export class ChatService {
     return this.socket
       .fromEvent<string>('messages');
   }
+
+  listenForClients(): Observable<any> {
+    return this.socket
+      .fromEvent<any>('clients');
+  }
+
+  sendName(name: string): void {
+    this.socket.emit('name', name);
+  }
 }

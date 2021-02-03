@@ -1,12 +1,27 @@
-<H1>HELLO WORLD CHAT</H1>
+<div *ngIf="name">
+  <h1>Hi {{name}}</h1>
+  <label>
+    Message:
+    <input type="text" [formControl]="message">
+  </label>
 
-<label>
-  Message:
-  <input type="text" [formControl]="message">
-</label>
+  <button (click)="sendMessage()">Send Message</button>
+</div>
+<div *ngIf="!name">
+  <label>
+    Name:
+    <input type="text" [formControl]="nameFC">
+  </label>
 
-<button (click)="sendMessage()">Send Message</button>
+  <button (click)="sendName()">Send Name</button>
+</div>
 
+<h2>Messages:</h2>
 <h4 *ngFor="let message of messages">
   {{message}}
 </h4>
+
+<h2>Clients:</h2>
+<h3 *ngFor="let client of clients">
+  {{client}}
+</h3>
