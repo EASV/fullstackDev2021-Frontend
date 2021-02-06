@@ -1,7 +1,8 @@
 import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {ChatService} from './shared/chat.service';
-import {Subscription} from 'rxjs';
+import {Subject, Subscription} from 'rxjs';
+import {take, takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-chat',
@@ -11,11 +12,14 @@ import {Subscription} from 'rxjs';
 export class ChatComponent implements OnInit, OnDestroy {
   message = new FormControl('');
   messages: string[] = [];
-  sub: Subscription = new Subscription();
+  unsubscribe$ = new Subject();
   constructor(private chatService: ChatService) { }
 
   ngOnInit(): void {
-    this.sub = this.chatService.listenForMessages()
+    this.chatService.listenForMessages()
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
       .subscribe(message => {
         console.log('hellloooo');
         this.messages.push(message);
@@ -24,9 +28,8 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     console.log('Destroyed');
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   sendMessage(): void {
