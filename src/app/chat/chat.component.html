@@ -19,3 +19,11 @@
   <button (click)="sendNickName()">Send</button>
 </div>
 
+<div *ngIf="clients$ | async as clients">
+  <ul>
+    <li *ngFor="let client of clients">
+      {{client}}
+    </li>
+  </ul>
+</div>
+
