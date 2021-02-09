@@ -9,6 +9,7 @@ import {WelcomeDto} from './welcome.dto';
   providedIn: 'root'
 })
 export class ChatService {
+  chatClient: ChatClient | undefined;
 
   constructor(private socket: Socket) { }
 
