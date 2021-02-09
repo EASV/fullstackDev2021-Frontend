@@ -4,6 +4,7 @@ import {ChatService} from './shared/chat.service';
 import {Observable, Subject, Subscription} from 'rxjs';
 import {take, takeUntil} from 'rxjs/operators';
 import {ChatClient} from './shared/chat-client.model';
+import {ChatMessage} from './shared/chat-message.model';
 
 @Component({
   selector: 'app-chat',
@@ -13,7 +14,7 @@ import {ChatClient} from './shared/chat-client.model';
 export class ChatComponent implements OnInit, OnDestroy {
   message = new FormControl('');
   nickNameFc = new FormControl('');
-  messages: string[] = [];
+  messages: ChatMessage[] = [];
   unsubscribe$ = new Subject();
   nickname: string | undefined;
   clients$: Observable<ChatClient[]> | undefined;
