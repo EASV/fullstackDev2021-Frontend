@@ -16,8 +16,8 @@ export class ChatComponent implements OnInit, OnDestroy {
   nickNameFc = new FormControl('');
   messages: ChatMessage[] = [];
   unsubscribe$ = new Subject();
-  nickname: string | undefined;
   clients$: Observable<ChatClient[]> | undefined;
+  chatClient: ChatClient | undefined;
   constructor(private chatService: ChatService) { }
 
   ngOnInit(): void {
@@ -29,14 +29,6 @@ export class ChatComponent implements OnInit, OnDestroy {
       .subscribe(message => {
         console.log('hellloooo');
         this.messages.push(message);
-      });
-    this.chatService.getAllMessages()
-      .pipe(
-        take(1)
-      )
-      .subscribe(messages => {
-        console.log('hellloooo');
-        this.messages = messages;
       });
     this.chatService.connect();
   }
@@ -55,7 +47,14 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   sendNickName(): void {
     if (this.nickNameFc.value) {
-      this.nickname = this.nickNameFc.value;
+      this.chatService.listenForWelcome()
+        .pipe(
+          takeUntil(this.unsubscribe$)
+        )
+        .subscribe(welcome => {
+          this.messages = welcome.messages;
+          this.chatClient = welcome.client;
+        });
       this.chatService.sendNickName(this.nickNameFc.value);
     }
   }
