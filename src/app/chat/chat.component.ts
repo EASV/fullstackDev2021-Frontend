@@ -18,10 +18,12 @@ export class ChatComponent implements OnInit, OnDestroy {
   unsubscribe$ = new Subject();
   clients$: Observable<ChatClient[]> | undefined;
   chatClient: ChatClient | undefined;
+  error$: Observable<string> | undefined;
   constructor(private chatService: ChatService) { }
 
   ngOnInit(): void {
     this.clients$ = this.chatService.listenForClients();
+    this.error$ = this.chatService.listenForErrors();
     this.chatService.listenForMessages()
       .pipe(
         takeUntil(this.unsubscribe$)

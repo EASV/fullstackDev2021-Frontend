@@ -32,6 +32,11 @@ export class ChatService {
       .fromEvent<WelcomeDto>('welcome');
   }
 
+  listenForErrors(): Observable<string> {
+    return this.socket
+      .fromEvent<string>('error');
+  }
+
   getAllMessages(): Observable<ChatMessage[]> {
     return this.socket
       .fromEvent<ChatMessage[]>('allMessages');

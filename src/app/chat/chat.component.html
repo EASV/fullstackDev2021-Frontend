@@ -1,3 +1,6 @@
+<div *ngIf="error$ | async as error" style="color: darkred">
+  {{error}}
+</div>
 <div *ngIf="chatClient">
   <h5>Hello {{chatClient.nickname}}</h5>
   <label>
