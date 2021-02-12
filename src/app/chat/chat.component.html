@@ -5,11 +5,13 @@
   <h5>Hello {{chatClient.nickname}}</h5>
   <label>
     Message:
-    <input type="text" [formControl]="message">
+    <input type="text" [formControl]="messageFc">
   </label>
 
   <button (click)="sendMessage()">Send Message</button>
-
+  <h5 *ngIf="clientsTyping.length > 0" style="color: burlywood">
+    Clients Typing: <span *ngFor="let client of clientsTyping">{{client.nickname}}, </span>
+  </h5>
   <h4 *ngFor="let chatMessage of messages">
     {{chatMessage.sender.nickname}} -- {{chatMessage.message}}
   </h4>
