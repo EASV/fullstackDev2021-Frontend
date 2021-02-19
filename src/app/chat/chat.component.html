@@ -29,7 +29,7 @@
     <input type="text" [formControl]="nickNameFc">
   </label>
 
-  <button (click)="sendNickName()">Send</button>
+  <button (click)="sendNickName()" mat-raised-button color="accent">Send</button>
 </div>
 
 <div *ngIf="clients$ | async as clients">
