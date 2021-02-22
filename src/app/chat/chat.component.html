@@ -1,4 +1,3 @@
-//Bootstrap
 <div *ngIf="error$ | async as error" style="color: darkred">
   {{error}}
 </div>
@@ -23,13 +22,21 @@
     {{chatMessage.sender.nickname}} -- {{chatMessage.message}}
   </h4>
 </div>
-<div *ngIf="!chatClient">
-  <label>
-    Enter Nickname:
-    <input type="text" [formControl]="nickNameFc">
-  </label>
-
-  <button (click)="sendNickName()" class="btn btn-success">Send</button>
+<div class="row align-items-center justify-content-center vh-100" *ngIf="!chatClient">
+  <div class="card">
+    <div class="card-body">
+      <h1>Welcome to Chatsies</h1>
+      <form>
+        <div class="form-group">
+          <label for="nickNameFc">Enter Nickname:</label>
+          <input type="text" [formControl]="nickNameFc" id="nickNameFc">
+        </div>
+        <div class="row justify-content-end">
+          <button type="button" (click)="sendNickName()" class="btn btn-success">Send</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 
 <div *ngIf="clients$ | async as clients">
