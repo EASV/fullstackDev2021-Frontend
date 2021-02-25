@@ -39,7 +39,8 @@
       <mat-card-footer fxFlex="30px" style="padding-left: 30px">
         <span
           *ngIf="clientsTyping.length > 0"
-          style="color: burlywood; font-size: 10px">
+          class="warn-text-color"
+          style="font-size: 10px">
           Clients Typing:
           <span *ngFor="let client of clientsTyping; let i = index">
         {{client.nickname}}
