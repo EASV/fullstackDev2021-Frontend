@@ -1,3 +1,7 @@
-<a routerLink="/">Home</a> ----
-<a routerLink="/chats">Go to Chats</a>
-<router-outlet></router-outlet>
+<div fxLayout="column" fxFill>
+  <div fxLayout="row" fxLayoutGap="5px">
+    <a routerLink="/">Home</a>
+    <a routerLink="/chats">Go to Chats</a>
+  </div>
+  <router-outlet class="router-flex"></router-outlet>
+</div>

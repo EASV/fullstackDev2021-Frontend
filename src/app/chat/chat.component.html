@@ -23,13 +23,16 @@
     {{chatMessage.sender.nickname}} -- {{chatMessage.message}}
   </h4>
 </div>
-<div *ngIf="!chatClient">
-  <label>
-    Enter Nickname:
-    <input type="text" [formControl]="nickNameFc">
-  </label>
 
-  <button (click)="sendNickName()" mat-raised-button color="accent">Send</button>
+<div fxLayout="column" fxLayoutAlign="center center" fxFlex>
+  <div *ngIf="!chatClient">
+    <label>
+      Enter Nickname:
+      <input type="text" [formControl]="nickNameFc">
+    </label>
+
+    <button (click)="sendNickName()" mat-raised-button color="accent">Send</button>
+  </div>
 </div>
 
 <div *ngIf="clients$ | async as clients">
