@@ -24,15 +24,21 @@
   </h4>
 </div>
 
-<div fxLayout="column" fxLayoutAlign="center center" fxFlex>
-  <div *ngIf="!chatClient">
-    <label>
-      Enter Nickname:
-      <input type="text" [formControl]="nickNameFc">
-    </label>
-
-    <button (click)="sendNickName()" mat-raised-button color="accent">Send</button>
-  </div>
+<div fxLayout="row" fxLayoutAlign="center center" fxFlex *ngIf="!chatClient">
+  <mat-card fxFlex="30">
+    <mat-card-header fxLayoutAlign="center top">
+      <mat-card-title>Welcome to Chatsies</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-form-field class="example-form-field" fxFlex>
+        <mat-label>Enter Nickname</mat-label>
+        <input matInput type="text" [formControl]="nickNameFc">
+        <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="sendNickName()" >
+          <mat-icon fontSet="material-icons-outlined">send</mat-icon>
+        </button>
+      </mat-form-field>
+    </mat-card-content>
+  </mat-card>
 </div>
 
 <div *ngIf="clients$ | async as clients">
