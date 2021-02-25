@@ -23,10 +23,15 @@
       <mat-card-header>
         <h5>Hello {{chatClient.nickname}}</h5>
       </mat-card-header>
-      <mat-card-content fxFlex>
-        <h4 *ngFor="let chatMessage of messages">
-          {{chatMessage.sender.nickname}} -- {{chatMessage.message}}
-        </h4>
+      <mat-card-content fxFlex fxLayout="column">
+        <mat-list fxFlex class="make-scrollable">
+          <mat-list-item *ngFor="let chatMessage of messages">
+            <mat-icon mat-list-icon>face</mat-icon>
+            <div mat-line>{{chatMessage.sender?.nickname}}</div>
+            <div mat-line>{{chatMessage.message}}</div>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+        </mat-list>
       </mat-card-content>
       <mat-card-actions>
         <label>
