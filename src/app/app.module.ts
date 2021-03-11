@@ -7,7 +7,7 @@ import {SocketIoConfig, SocketIoModule} from 'ngx-socket-io';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {SharedModule} from './shared/shared.module';
 
-const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
+const config: SocketIoConfig = { url: 'http://localhost:3100', options: {} };
 
 @NgModule({
   declarations: [
