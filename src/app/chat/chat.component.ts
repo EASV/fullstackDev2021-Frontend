@@ -5,6 +5,7 @@ import {Observable, Subject, Subscription} from 'rxjs';
 import {debounceTime, take, takeUntil} from 'rxjs/operators';
 import {ChatClient} from './shared/chat-client.model';
 import {ChatMessage} from './shared/chat-message.model';
+import {LoginService} from '../shared/login.service';
 
 @Component({
   selector: 'app-chat',
@@ -21,7 +22,8 @@ export class ChatComponent implements OnInit, OnDestroy {
   chatClient: ChatClient | undefined;
   error$: Observable<string> | undefined;
   socketId: string | undefined;
-  constructor(private chatService: ChatService) { }
+  constructor(private chatService: ChatService,
+              private loginService: LoginService) { }
 
   ngOnInit(): void {
     this.clients$ = this.chatService.listenForClients();
@@ -59,24 +61,12 @@ export class ChatComponent implements OnInit, OnDestroy {
       .subscribe(welcome => {
         this.messages = welcome.messages;
         this.chatClient = this.chatService.chatClient = welcome.client;
+        this.loginService.saveClientId(this.chatClient.id);
       });
-    if (this.chatService.chatClient) {
+    /*if (this.chatService.chatClient) {
       this.chatService.sendNickName(this.chatService.chatClient.nickname);
-    }
-    this.chatService.listenForConnect()
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((id) => {
-        this.socketId = id;
-      });
-    this.chatService.listenForDisconnect()
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((id) => {
-        this.socketId = id;
-      });
+    }*/
+    this.handleConnection();
   }
 
   ngOnDestroy(): void {
@@ -85,7 +75,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   sendMessage(): void {
-    this.chatService.sendMessage(this.messageFc.value);
+    this.chatService.sendMessage({message: this.messageFc.value, senderId: this.loginService.getClientId()});
     this.messageFc.patchValue('');
   }
 
@@ -93,5 +83,25 @@ export class ChatComponent implements OnInit, OnDestroy {
     if (this.nickNameFc.value) {
       this.chatService.sendNickName(this.nickNameFc.value);
     }
+  }
+
+  handleConnection(): void {
+    this.chatService.listenForConnect()
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((id) => {
+        const cid = this.loginService.getClientId();
+        if (cid) {
+          this.chatService.connectClient(cid);
+        }
+      });
+    this.chatService.listenForDisconnect()
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((id) => {
+        this.socketId = id;
+      });
   }
 }

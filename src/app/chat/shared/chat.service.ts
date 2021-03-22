@@ -6,6 +6,7 @@ import {ChatMessage} from './chat-message.model';
 import {WelcomeDto} from './welcome.dto';
 import {map, tap} from 'rxjs/operators';
 import {SocketChat} from '../../app.module';
+import {MessageDto} from './message.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class ChatService {
 
   constructor(private socket: SocketChat) { }
 
-  sendMessage(msg: string): void {
+  sendMessage(msg: MessageDto): void {
     this.socket.emit('message', msg);
   }
 
@@ -51,7 +52,7 @@ export class ChatService {
     return this.socket
       .fromEvent<string>('connect')
       .pipe(
-        tap( (value) => {
+        map( (value) => {
           return this.socket.ioSocket.id;
         })
       );
@@ -73,5 +74,9 @@ export class ChatService {
   }
   connect(): void {
     this.socket.connect();
+  }
+
+  connectClient(cid: string): void {
+    this.socket.emit('clientConnect', cid);
   }
 }
