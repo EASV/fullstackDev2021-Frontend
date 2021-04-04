@@ -51,7 +51,7 @@ export class ChatService {
     return this.socket
       .fromEvent<string>('connect')
       .pipe(
-        tap( (value) => {
+        map( (value) => {
           return this.socket.ioSocket.id;
         })
       );
