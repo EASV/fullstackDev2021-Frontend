@@ -5,6 +5,7 @@ import {Observable, Subject, Subscription} from 'rxjs';
 import {debounceTime, take, takeUntil} from 'rxjs/operators';
 import {ChatClient} from './shared/chat-client.model';
 import {ChatMessage} from './shared/chat-message.model';
+import {JoinChatDto} from './shared/join-chat.dto';
 
 @Component({
   selector: 'app-chat',
@@ -61,7 +62,10 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.chatClient = this.chatService.chatClient = welcome.client;
       });
     if (this.chatService.chatClient) {
-      this.chatService.sendNickName(this.chatService.chatClient.nickname);
+      this.chatService.joinChat({
+        id: this.chatService.chatClient.id,
+        nickname: this.chatService.chatClient.nickname
+      });
     }
     this.chatService.listenForConnect()
       .pipe(
@@ -91,7 +95,8 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   sendNickName(): void {
     if (this.nickNameFc.value) {
-      this.chatService.sendNickName(this.nickNameFc.value);
+      const dto: JoinChatDto = {nickname: this.nickNameFc.value};
+      this.chatService.joinChat(dto);
     }
   }
 }

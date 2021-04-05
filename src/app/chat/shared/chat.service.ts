@@ -6,6 +6,7 @@ import {ChatMessage} from './chat-message.model';
 import {WelcomeDto} from './welcome.dto';
 import {map, tap} from 'rxjs/operators';
 import {SocketChat} from '../../app.module';
+import {JoinChatDto} from './join-chat.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -65,8 +66,8 @@ export class ChatService {
       );
   }
 
-  sendNickName(nickname: string): void {
-    this.socket.emit('nickname', nickname);
+  joinChat(dto: JoinChatDto): void {
+    this.socket.emit('joinChat', dto);
   }
   disconnect(): void {
     this.socket.disconnect();
