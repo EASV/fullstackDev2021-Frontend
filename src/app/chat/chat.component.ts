@@ -6,6 +6,7 @@ import {debounceTime, take, takeUntil} from 'rxjs/operators';
 import {ChatClient} from './shared/chat-client.model';
 import {ChatMessage} from './shared/chat-message.model';
 import {JoinChatDto} from './shared/join-chat.dto';
+import {StorageService} from '../shared/storage.service';
 
 @Component({
   selector: 'app-chat',
@@ -22,7 +23,8 @@ export class ChatComponent implements OnInit, OnDestroy {
   chatClient: ChatClient | undefined;
   error$: Observable<string> | undefined;
   socketId: string | undefined;
-  constructor(private chatService: ChatService) { }
+  constructor(private chatService: ChatService,
+              private storageService: StorageService) { }
 
   ngOnInit(): void {
     this.clients$ = this.chatService.listenForClients();
@@ -59,12 +61,14 @@ export class ChatComponent implements OnInit, OnDestroy {
       )
       .subscribe(welcome => {
         this.messages = welcome.messages;
-        this.chatClient = this.chatService.chatClient = welcome.client;
+        this.chatClient = welcome.client;
+        this.storageService.saveChatClient(this.chatClient);
       });
-    if (this.chatService.chatClient) {
+    const oldClient = this.storageService.loadChatClient();
+    if (oldClient) {
       this.chatService.joinChat({
-        id: this.chatService.chatClient.id,
-        nickname: this.chatService.chatClient.nickname
+        id: oldClient.id,
+        nickname: oldClient.nickname
       });
     }
     this.chatService.listenForConnect()

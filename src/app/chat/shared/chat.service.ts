@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import {Socket} from 'ngx-socket-io';
 import {Observable} from 'rxjs';
 import {ChatClient} from './chat-client.model';
 import {ChatMessage} from './chat-message.model';
@@ -12,8 +11,6 @@ import {JoinChatDto} from './join-chat.dto';
   providedIn: 'root'
 })
 export class ChatService {
-  chatClient: ChatClient | undefined;
-
   constructor(private socket: SocketChat) { }
 
   sendMessage(msg: string): void {
