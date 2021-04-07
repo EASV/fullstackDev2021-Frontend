@@ -7,6 +7,9 @@ import {ChatClient} from './shared/chat-client.model';
 import {ChatMessage} from './shared/chat-message.model';
 import {JoinChatDto} from './shared/join-chat.dto';
 import {StorageService} from '../shared/storage.service';
+import {Select, Store} from '@ngxs/store';
+import {ChatState} from './state/chat.state';
+import {ListenForClients, StopListeningForClients} from './state/chat.actions';
 
 @Component({
   selector: 'app-chat',
@@ -19,15 +22,18 @@ export class ChatComponent implements OnInit, OnDestroy {
   messages: ChatMessage[] = [];
   clientsTyping: ChatClient[] = [];
   unsubscribe$ = new Subject();
+  @Select(ChatState.clients)
   clients$: Observable<ChatClient[]> | undefined;
   chatClient: ChatClient | undefined;
   error$: Observable<string> | undefined;
   socketId: string | undefined;
-  constructor(private chatService: ChatService,
+  constructor(private store: Store,
+              private chatService: ChatService,
               private storageService: StorageService) { }
 
   ngOnInit(): void {
-    this.clients$ = this.chatService.listenForClients();
+    // this.clients$ = this.chatService.listenForClients();
+    this.store.dispatch(new ListenForClients());
     this.error$ = this.chatService.listenForErrors();
     this.messageFc.valueChanges
       .pipe(
@@ -64,7 +70,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.chatClient = welcome.client;
         this.storageService.saveChatClient(this.chatClient);
       });
-    const oldClient = this.storageService.loadChatClient();
+    const oldClient = this.chatClient = this.storageService.loadChatClient();
     if (oldClient) {
       this.chatService.joinChat({
         id: oldClient.id,
@@ -90,6 +96,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+    this.store.dispatch(new StopListeningForClients());
   }
 
   sendMessage(): void {

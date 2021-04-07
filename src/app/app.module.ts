@@ -3,10 +3,13 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {Socket, SocketIoConfig, SocketIoModule} from 'ngx-socket-io';
+import {Socket, SocketIoModule} from 'ngx-socket-io';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {SharedModule} from './shared/shared.module';
-import {ReactiveFormsModule} from '@angular/forms';
+import {NgxsModule} from '@ngxs/store';
+import {environment} from '../environments/environment';
+import {ChatState} from './chat/state/chat.state';
+import {NgxsLoggerPluginModule} from '@ngxs/logger-plugin';
 
 @Injectable()
 export class SocketChat extends Socket {
@@ -36,6 +39,10 @@ export class SocketStock extends Socket {
     SocketIoModule,
     BrowserAnimationsModule,
     SharedModule,
+    NgxsModule.forRoot([], {
+      developmentMode: !environment.production
+    }),
+    NgxsLoggerPluginModule.forRoot()
   ],
   providers: [SocketChat, SocketStock],
   bootstrap: [AppComponent]
