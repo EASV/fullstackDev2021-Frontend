@@ -17,13 +17,9 @@ import {ChatClientLoggedIn, ListenForClients, LoadClientFromStorage, StopListeni
   styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit, OnDestroy {
-  @Select(ChatState.clients)
-  clients$: Observable<ChatClient[]> | undefined;
-  @Select(ChatState.clientIds)
-  clientsIds$: Observable<number[]> | undefined;
-
-  @Select(ChatState.loggedInClient)
-  chatClient$: Observable<ChatClient> | undefined;
+  @Select(ChatState.clients) clients$: Observable<ChatClient[]> | undefined;
+  @Select(ChatState.clientIds) clientsIds$: Observable<number[]> | undefined;
+  @Select(ChatState.loggedInClient) chatClient$: Observable<ChatClient> | undefined;
 
   messageFc = new FormControl('');
   nickNameFc = new FormControl('');
@@ -34,8 +30,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   error$: Observable<string> | undefined;
   socketId: string | undefined;
   constructor(private store: Store,
-              private chatService: ChatService,
-              private storageService: StorageService) { }
+              private chatService: ChatService) { }
 
   ngOnInit(): void {
     // this.clients$ = this.chatService.listenForClients();

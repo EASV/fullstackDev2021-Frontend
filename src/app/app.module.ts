@@ -46,7 +46,9 @@ export class SocketStock extends Socket {
     }),
     NgxsLoggerPluginModule.forRoot(),
     NgxsReduxDevtoolsPluginModule.forRoot(),
-    NgxsStoragePluginModule.forRoot()
+    NgxsStoragePluginModule.forRoot({
+      key: ChatState
+    })
   ],
   providers: [SocketChat, SocketStock],
   bootstrap: [AppComponent]
