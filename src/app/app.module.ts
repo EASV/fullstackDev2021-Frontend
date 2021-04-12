@@ -10,6 +10,8 @@ import {NgxsModule} from '@ngxs/store';
 import {environment} from '../environments/environment';
 import {ChatState} from './chat/state/chat.state';
 import {NgxsLoggerPluginModule} from '@ngxs/logger-plugin';
+import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
+import {NgxsStoragePluginModule} from '@ngxs/storage-plugin';
 
 @Injectable()
 export class SocketChat extends Socket {
@@ -42,7 +44,9 @@ export class SocketStock extends Socket {
     NgxsModule.forRoot([], {
       developmentMode: !environment.production
     }),
-    NgxsLoggerPluginModule.forRoot()
+    NgxsLoggerPluginModule.forRoot(),
+    NgxsReduxDevtoolsPluginModule.forRoot(),
+    NgxsStoragePluginModule.forRoot()
   ],
   providers: [SocketChat, SocketStock],
   bootstrap: [AppComponent]

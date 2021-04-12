@@ -13,3 +13,13 @@ export class UpdateClients {
 
   static readonly type = '[Chat] Update Clients';
 }
+
+export class ChatClientLoggedIn {
+  constructor(public client: ChatClient) {}
+
+  static readonly type = '[Chat] New ChatClient Logged In';
+}
+
+export class LoadClientFromStorage {
+  static readonly type = '[Chat] Load ChatClient From Storage';
+}
