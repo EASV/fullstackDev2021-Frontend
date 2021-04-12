@@ -18,7 +18,7 @@ import {ChatClientLoggedIn, ListenForClients, LoadClientFromStorage, StopListeni
 })
 export class ChatComponent implements OnInit, OnDestroy {
   @Select(ChatState.clients) clients$: Observable<ChatClient[]> | undefined;
-  @Select(ChatState.clientIds) clientsIds$: Observable<number[]> | undefined;
+  @Select(ChatState.clientIds) clientsIds$: Observable<string[]> | undefined;
   @Select(ChatState.loggedInClient) chatClient$: Observable<ChatClient> | undefined;
 
   messageFc = new FormControl('');
